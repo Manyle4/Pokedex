@@ -34,8 +34,8 @@ let currentPage = 1;
 infoPage.style.display = "none";
 
 async function getPokemon(page) {
-    let offset = (page - 1) * 20;
-    const apiUrl = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=20`;
+    let offset = (page - 1) * 16;
+    const apiUrl = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=16`;
     const response = await fetch(apiUrl);
     const data = await response.json();
     return data.results;
@@ -87,7 +87,7 @@ let span = document.createElement("span");
 span.classList.add("span");
 let span2 = document.createElement("span");
 span2.classList.add("span");
-span.innerHTML =  `<img src="Assets/Arrow.png" alt="#" id="image">`;
+span.innerHTML = `<img src="Assets/Arrow.png" alt="#" id="image">`;
 span2.innerHTML = `<img src="Assets/Arrow.png" alt="#" id="image2">`;
 
 let header = document.createElement("div");
@@ -171,20 +171,28 @@ async function displayPokemon(page) {
 displayPokemon(currentPage);
 
 next.addEventListener("click", async function () {
-    cards.innerHTML = " ";
-    currentPage++;
-    pokemons = [];
-    await displayPokemon(currentPage);
-    getInfo(currentPage);
-});
-
-back.addEventListener("click", async function () {
-    if (currentPage > 1) {
+    if (search.value.length > 3) {
+        return;
+    } else {
         cards.innerHTML = " ";
-        currentPage--;
+        currentPage++;
         pokemons = [];
         await displayPokemon(currentPage);
         getInfo(currentPage);
+    }
+});
+
+back.addEventListener("click", async function () {
+    if (search.value.length > 3) {
+        return;
+    } else {
+        if (currentPage > 1) {
+            cards.innerHTML = " ";
+            currentPage--;
+            pokemons = [];
+            await displayPokemon(currentPage);
+            getInfo(currentPage);
+        }
     }
 });
 
